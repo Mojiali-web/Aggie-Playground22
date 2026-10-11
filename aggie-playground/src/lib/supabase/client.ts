@@ -13,8 +13,8 @@ export const supabaseConfigured = Boolean(
 export function getSupabase(): SupabaseClient {
   if (!client) {
     client = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://localhost:54321",
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "missing-anon-key",
+      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://wdxdodredyficbycgrni.supabase.co",
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_HivAYYtPuqMGo02a4hToKg_7UFeqCw_",
     ) as unknown as SupabaseClient;
   }
   return client;
