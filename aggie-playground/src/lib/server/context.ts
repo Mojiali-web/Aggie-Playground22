@@ -62,8 +62,10 @@ export async function scrapeEvents(sourceUrl: string): Promise<{ events: RawEven
             "Extract only events that are literally listed on this page. Never invent or infer events, dates, or locations. Leave a field out when the page does not show it.",
         },
         markdownParams: { includeLinks: true },
-        sharedParams: { waitFor: 4000, dismissCookies: true },
-        maxAgeMs: 10 * 60 * 1000,
+        // AggieLife renders its event list in JavaScript after the initial page load.
+        // Give the event cards time to appear, and avoid reusing a cached empty/loading page.
+        sharedParams: { waitFor: 15_000, dismissCookies: true },
+        maxAgeMs: 0,
         timeoutOpts: { milliseconds: 40_000, behavior: "fail" },
         tags: ["aggie-playground-clubs"],
       }),
