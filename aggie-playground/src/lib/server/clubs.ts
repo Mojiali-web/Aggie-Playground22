@@ -2,6 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { ContextError, scrapeEvents, type RawEvent } from "./context";
+import { supabaseUrl } from "@/lib/supabase/config";
 
 export const CLUB_SOURCES = ["https://aggielife.ucdavis.edu/events"];
 
@@ -17,10 +18,9 @@ export interface NormalizedEvent {
 }
 
 export function serviceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error("Supabase server credentials are not configured.");
-  return createClient(url, key, { auth: { persistSession: false } });
+  if (!key) throw new Error("SUPABASE_SERVICE_ROLE_KEY is not set on the server.");
+  return createClient(supabaseUrl, key, { auth: { persistSession: false } });
 }
 
 const clean = (s: unknown, max: number): string | null => {

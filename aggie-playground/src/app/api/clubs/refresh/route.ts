@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { serviceClient, syncClubEvents } from "@/lib/server/clubs";
+import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 
 export const maxDuration = 60;
 
@@ -12,10 +13,7 @@ async function authorize(req: Request): Promise<"cron" | "user" | null> {
   const secret = process.env.CRON_SECRET;
   if (secret && token === secret) return "cron";
   try {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !anon) return null;
-    const { data } = await createClient(url, anon, { auth: { persistSession: false } }).auth.getUser(token);
+    const { data } = await createClient(supabaseUrl, supabaseAnonKey, { auth: { persistSession: false } }).auth.getUser(token);
     return data.user ? "user" : null;
   } catch {
     return null;
